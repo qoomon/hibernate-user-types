@@ -47,7 +47,6 @@ public abstract class AbstractCompositeUserType implements CompositeUserType {
      * @param field      field of instance
      * @param instance   instance of field
      * @param fieldValue field value
-     * @return field value
      */
     protected static void setFieldValue(Field field, Object instance, Object fieldValue) {
         try {
