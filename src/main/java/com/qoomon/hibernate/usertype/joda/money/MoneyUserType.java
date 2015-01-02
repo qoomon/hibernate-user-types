@@ -34,7 +34,7 @@ public class MoneyUserType extends AbstractCompositeUserType {
         try {
             this.bigMoneyConstructor = BigMoney.class.getDeclaredConstructor(CurrencyUnit.class, BigDecimal.class);
             this.bigMoneyConstructor.setAccessible(true);
-        } catch (ReflectiveOperationException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("missing constructor " + BigMoney.class.getSimpleName() + "("
                     + CurrencyUnit.class.getSimpleName() + ", " + BigDecimal.class.getSimpleName() + ")", ex);
         }
@@ -42,7 +42,7 @@ public class MoneyUserType extends AbstractCompositeUserType {
         try {
             this.moneyConstructor = Money.class.getDeclaredConstructor(BigMoney.class);
             this.moneyConstructor.setAccessible(true);
-        } catch (ReflectiveOperationException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("missing constructor " + Money.class.getSimpleName() + "("
                     + BigMoney.class.getSimpleName() + ")", ex);
         }
@@ -87,7 +87,7 @@ public class MoneyUserType extends AbstractCompositeUserType {
             // safe operation. was check on construction.
             BigMoney bigMoney = bigMoneyConstructor.newInstance(currencyUnit, amount);
             return moneyConstructor.newInstance(bigMoney);
-        } catch (ReflectiveOperationException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("unexpected",ex);
         }
     }

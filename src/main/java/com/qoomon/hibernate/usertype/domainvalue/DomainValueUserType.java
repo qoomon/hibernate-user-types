@@ -28,7 +28,7 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
         try {
             this.domainValueConstructor = domainValueType.getDeclaredConstructor(valueType);
             this.domainValueConstructor.setAccessible(true);
-        } catch (ReflectiveOperationException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("missing constructor " + domainValueType.getSimpleName() + "("
                     + valueType.getSimpleName() + ")", ex);
         }
@@ -67,7 +67,7 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
         try {
             // safe operation. was check on construction.
             return this.domainValueConstructor.newInstance(value);
-        } catch (ReflectiveOperationException ex) {
+        } catch (Exception ex) {
             throw new RuntimeException("unexpected",ex);
         }
     }
