@@ -1,7 +1,5 @@
-hibernate-user-type
-===================
-
 Hibernate User Types
+===================
 
 * Domain Value - https://github.com/qoomon/domain-value
   * DV<T> - com.qoomon.domainvalue.type.DV;
