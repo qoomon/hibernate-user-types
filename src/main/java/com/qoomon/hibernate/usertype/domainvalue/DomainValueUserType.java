@@ -28,9 +28,9 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
         try {
             this.domainValueConstructor = domainValueType.getDeclaredConstructor(valueType);
             this.domainValueConstructor.setAccessible(true);
-        } catch (NoSuchMethodException | SecurityException exception) {
+        } catch (ReflectiveOperationException ex) {
             throw new RuntimeException("missing constructor " + domainValueType.getSimpleName() + "("
-                    + valueType.getSimpleName() + ")", exception);
+                    + valueType.getSimpleName() + ")", ex);
         }
 
         this.hibernateType = HibernateTypeUtil.getType(valueType);
@@ -40,7 +40,7 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
     }
 
     public static <T extends DV<V>, V> List<UserType> generate(final Collection<Class<T>> domainValueTypes) {
-        final List<UserType> result = new LinkedList<>();
+        final List<UserType> result = new LinkedList<UserType>();
 
         for (final Class<T> domainValueClass : domainValueTypes) {
             final UserType userType = new DomainValueUserType<T, V>(domainValueClass);
@@ -67,8 +67,8 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
         try {
             // safe operation. was check on construction.
             return this.domainValueConstructor.newInstance(value);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new RuntimeException(ex);
+        } catch (ReflectiveOperationException ex) {
+            throw new RuntimeException("unexpected",ex);
         }
     }
 

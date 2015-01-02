@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HibernateTypeUtil {
-    private static final Map<Class<?>, SingleColumnType<?>> hibernateTypeMap = new HashMap<>();
+    private static final Map<Class<?>, SingleColumnType<?>> hibernateTypeMap = new HashMap<Class<?>, SingleColumnType<?>>();
 
     static {
         setSqlMapping(Boolean.class, BooleanType.INSTANCE);

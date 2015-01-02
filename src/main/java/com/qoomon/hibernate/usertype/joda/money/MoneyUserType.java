@@ -34,16 +34,17 @@ public class MoneyUserType extends AbstractCompositeUserType {
         try {
             this.bigMoneyConstructor = BigMoney.class.getDeclaredConstructor(CurrencyUnit.class, BigDecimal.class);
             this.bigMoneyConstructor.setAccessible(true);
-        } catch (NoSuchMethodException | SecurityException exception) {
+        } catch (ReflectiveOperationException ex) {
             throw new RuntimeException("missing constructor " + BigMoney.class.getSimpleName() + "("
-                    + CurrencyUnit.class.getSimpleName() + ", " + BigDecimal.class.getSimpleName() + ")", exception);
+                    + CurrencyUnit.class.getSimpleName() + ", " + BigDecimal.class.getSimpleName() + ")", ex);
         }
+        
         try {
             this.moneyConstructor = Money.class.getDeclaredConstructor(BigMoney.class);
             this.moneyConstructor.setAccessible(true);
-        } catch (NoSuchMethodException | SecurityException exception) {
+        } catch (ReflectiveOperationException ex) {
             throw new RuntimeException("missing constructor " + Money.class.getSimpleName() + "("
-                    + BigMoney.class.getSimpleName() + ")", exception);
+                    + BigMoney.class.getSimpleName() + ")", ex);
         }
     }
 
@@ -86,8 +87,8 @@ public class MoneyUserType extends AbstractCompositeUserType {
             // safe operation. was check on construction.
             BigMoney bigMoney = bigMoneyConstructor.newInstance(currencyUnit, amount);
             return moneyConstructor.newInstance(bigMoney);
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new RuntimeException(ex);
+        } catch (ReflectiveOperationException ex) {
+            throw new RuntimeException("unexpected",ex);
         }
     }
 
