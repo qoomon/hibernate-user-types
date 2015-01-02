@@ -1,7 +1,6 @@
 Hibernate User Types
 ===================
-Maven Dependency
-
+**Maven Dependency**
 ```xml
 <dependency>
     <groupId>com.qoomon</groupId>
