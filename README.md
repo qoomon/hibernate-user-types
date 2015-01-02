@@ -1,5 +1,14 @@
 Hibernate User Types
 ===================
+Maven Dependency
+
+```xml
+<dependency>
+    <groupId>com.qoomon</groupId>
+    <artifactId>hibernate-usertype</artifactId>
+    <version>0.1.0</version>
+</dependency>
+```
 
 * **Domain Value** - https://github.com/qoomon/domain-value
   * **DV<T>** - com.qoomon.domainvalue.type.DV;
