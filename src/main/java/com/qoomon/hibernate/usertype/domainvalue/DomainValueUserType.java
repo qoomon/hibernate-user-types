@@ -39,16 +39,6 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
         }
     }
 
-    public static <T extends DV<V>, V> List<UserType> generate(final Collection<Class<T>> domainValueTypes) {
-        final List<UserType> result = new LinkedList<UserType>();
-
-        for (final Class<T> domainValueClass : domainValueTypes) {
-            final UserType userType = new DomainValueUserType<T, V>(domainValueClass);
-            result.add(userType);
-        }
-        return result;
-    }
-
     @SuppressWarnings("unchecked")
     protected  Class<V> getTypeArgument(final Class<T> domainValueType) {
         return (Class<V>) GenericTypeUtil.getTypeArguments(DV.class, domainValueType).get(0);
