@@ -44,4 +44,7 @@ public List<DomainValueUserType> createDomainValueUserTypes(String domainValuePa
   }
   return resultList;
 }
+
+
+UserTypeUtil.registerUserTypes(hibernateConfiguration, createDomainValueUserTypes("com.qoomon.fancyapp.domainvalues"))
 ```
