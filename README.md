@@ -26,3 +26,22 @@ Hibernate User Types [![Build Status](https://travis-ci.org/qoomon/hibernate-use
   * **InternetAddress** - javax.mail.internet.InternetAddress
     * com.qoomon.hibernate.usertype.javax.mail.InternetAddressUserType
 
+
+**Spring Example**
+  * **Domain Values**
+```java
+public List<DomainValueUserType> createDomainValueUserTypes(String domainValuePackage){
+  List<DomainValueUserType> resultList = new LinkedList<>()
+  ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(false);
+  // Filter to include only classes assignable to DV.class.
+  componentProvider.addIncludeFilter(new AssignableTypeFilter(DV.class));
+  // Find classes in the given package (or subpackages)
+  Set<BeanDefinition> beans = componentProvider.findCandidateComponents(domainValuePackage);
+  for (BeanDefinition bean : beans) {
+      // Create DomainValueUserType for domainValueType.
+      Class<? extends DV> domainValueType = Class.of(bean.getBeanClassName();
+      resultList.add(new DomainValueUserType(domainValueType));
+  }
+  return resultList;
+}
+```
