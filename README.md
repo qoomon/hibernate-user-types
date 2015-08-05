@@ -45,6 +45,15 @@ public List<DomainValueUserType> createDomainValueUserTypes(String domainValuePa
   return resultList;
 }
 
+--------
 
-UserTypeUtil.registerUserTypes(hibernateConfiguration, createDomainValueUserTypes("com.qoomon.fancyapp.domainvalues"))
+Configuration configuration = new Configuration().configure();
+
+UserTypeUtil.registerUserTypes(configuration, createDomainValueUserTypes("com.qoomon.fancyapp.domainvalues"))
+
+StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
+applySettings(configuration.getProperties());
+SessionFactory factory = configuration.buildSessionFactory(builder.build());
+
+
 ```
