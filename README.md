@@ -29,6 +29,22 @@ Hibernate User Types [![Build Status](https://travis-ci.org/qoomon/hibernate-use
 
 **Spring Example**
 ```java
+@Bean
+public SessionFactory sessionFactory(){
+    Configuration configuration = new Configuration();
+    
+    UserTypeUtil.registerUserTypes(configuration, createDomainValueUserTypes("com.qoomon.fancyapp.domainvalues"));
+    UserTypeUtil.registerUserTypes(configuration, new BigMoneyUserType());
+    UserTypeUtil.registerUserTypes(configuration, new MoneyUserType());
+    UserTypeUtil.registerUserTypes(configuration, new InternetAddressUserType());
+    
+    StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
+    ServiceRegistry = serviceRegistry = serviceRegistryBuilder.build();
+    SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    return sessionFactory; 
+}
+//...
+
 public List<DomainValueUserType> createDomainValueUserTypes(String domainValuePackage){
   List<DomainValueUserType> resultList = new LinkedList<>()
   ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(false);
@@ -43,19 +59,5 @@ public List<DomainValueUserType> createDomainValueUserTypes(String domainValuePa
   }
   return resultList;
 }
-
-//...
-
-Configuration configuration = new Configuration();
-
-UserTypeUtil.registerUserTypes(configuration, createDomainValueUserTypes("com.qoomon.fancyapp.domainvalues"));
-UserTypeUtil.registerUserTypes(configuration, new BigMoneyUserType());
-UserTypeUtil.registerUserTypes(configuration, new MoneyUserType());
-UserTypeUtil.registerUserTypes(configuration, new InternetAddressUserType());
-
-StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().
-applySettings(configuration.getProperties());
-SessionFactory factory = configuration.buildSessionFactory(builder.build());
-
 
 ```
