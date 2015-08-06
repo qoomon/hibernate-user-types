@@ -39,7 +39,8 @@ public SessionFactory sessionFactory(){
     UserTypeUtil.registerUserTypes(configuration, new InternetAddressUserType());
     
     StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
-    ServiceRegistry = serviceRegistry = serviceRegistryBuilder.build();
+    serviceRegistryBuilder.applySetting(Environment.DATASOURCE, dataSource());
+    ServiceRegistry serviceRegistry = serviceRegistryBuilder.build();
     SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
     return sessionFactory; 
 }
