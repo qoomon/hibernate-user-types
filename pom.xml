@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <name>Hibernate Usertypes</name>
     <description>Hibernate Usertypes</description>
-    <url>https://github.com/qoomon/domain-value</url>
+    <url>https://github.com/qoomon/hibernate-user-type</url>
     <groupId>com.qoomon</groupId>
     <artifactId>hibernate-usertype</artifactId>
     <version>0.1.0</version>
