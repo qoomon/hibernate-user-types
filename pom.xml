@@ -25,8 +25,8 @@
     </developers>
 
     <scm>
-        <url>https://github.com/qoomon/hibernate-usertype.git</url>
-        <connection>scm:git:https://github.com/qoomon/hibernate-usertype.git</connection>
+        <url>https://github.com/qoomon/hibernate-user-type.git</url>
+        <connection>scm:git:https://github.com/qoomon/hibernate-user-type.git</connection>
     </scm>
 
     <distributionManagement>
