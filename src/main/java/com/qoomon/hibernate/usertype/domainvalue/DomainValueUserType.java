@@ -1,35 +1,37 @@
 package com.qoomon.hibernate.usertype.domainvalue;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.hibernate.type.SingleColumnType;
-import org.hibernate.usertype.UserType;
 
 import com.qoomon.domainvalue.type.DV;
 import com.qoomon.hibernate.usertype.AbstractUserType;
-import com.qoomon.hibernate.usertype.util.HibernateTypeUtil;
+import org.hibernate.type.TypeResolver;
+import org.hibernate.usertype.UserType;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T, V> {
 
     private final SingleColumnType<V> hibernateType;
 
-    public DomainValueUserType(final Class<T> domainValueType) {
+    public DomainValueUserType(TypeResolver typeResolver, final Class<T> domainValueType) {
         super(domainValueType);
 
         Class<V> valueType = DV.getValueType(domainValueType);
-        this.hibernateType = HibernateTypeUtil.getType(valueType);
+        //noinspection unchecked
+        this.hibernateType = (SingleColumnType<V>) typeResolver.basic(valueType.getName());
+
         if (this.hibernateType == null) {
             throw new RuntimeException("No mapping for value type " + valueType.getName());
         }
     }
 
-    public static <T extends DV<V>, V> List<UserType> generate(final Collection<Class<T>> domainValueTypes) {
-        final List<UserType> result = new LinkedList<UserType>();
+    public static <T extends DV<V>, V> List<UserType> generate(TypeResolver typeResolver, final Collection<Class<T>> domainValueTypes) {
+        final List<UserType> result = new LinkedList<>();
 
         for (final Class<T> domainValueClass : domainValueTypes) {
-            final UserType userType = new DomainValueUserType<T, V>(domainValueClass);
+            final UserType userType = new DomainValueUserType<>( typeResolver, domainValueClass);
             result.add(userType);
         }
         return result;
