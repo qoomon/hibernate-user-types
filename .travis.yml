@@ -1,6 +1,6 @@
+sudo: false
 language: java
 before_install:
 
-script: mvn -e verify
 jdk:
-  - openjdk6
+  - openjdk7

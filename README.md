@@ -32,33 +32,29 @@ Hibernate User Types [![Build Status](https://travis-ci.org/qoomon/hibernate-use
 @Bean
 public SessionFactory sessionFactory(){
     Configuration configuration = new Configuration();
-    
-    UserTypeUtil.registerUserTypes(configuration, createDomainValueUserTypes("com.qoomon.fancyapp.domainvalues"));
+
+    UserTypeUtil.registerUserTypes(configuration, createDomainValueUserTypes(configuration, "com.qoomon.fancyapp.domainvalues"));
     UserTypeUtil.registerUserTypes(configuration, new BigMoneyUserType());
     UserTypeUtil.registerUserTypes(configuration, new MoneyUserType());
     UserTypeUtil.registerUserTypes(configuration, new InternetAddressUserType());
-    
+
     StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
     serviceRegistryBuilder.applySetting(Environment.DATASOURCE, dataSource());
     ServiceRegistry serviceRegistry = serviceRegistryBuilder.build();
     SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-    return sessionFactory; 
+    return sessionFactory;
 }
 //...
 
-public List<DomainValueUserType> createDomainValueUserTypes(String domainValuePackage){
-  List<DomainValueUserType> resultList = new LinkedList<>()
-  ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(false);
-  // Filter to include only classes assignable to DV.class
-  componentProvider.addIncludeFilter(new AssignableTypeFilter(DV.class));
-  // Find classes in the given package (or subpackages)
-  Set<BeanDefinition> beans = componentProvider.findCandidateComponents(domainValuePackage);
-  for (BeanDefinition bean : beans) {
-      // Create DomainValueUserType for domainValueType
-      Class<? extends DV> domainValueType = Class.of(bean.getBeanClassName();
-      resultList.add(new DomainValueUserType(domainValueType));
-  }
-  return resultList;
+public List<DomainValueUserType> createDomainValueUserTypes(Configuration configuration, String domainValuePackage){
+    ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(false);
+    // Filter to include only classes assignable to DV.class
+    componentProvider.addIncludeFilter(new AssignableTypeFilter(DV.class));
+    // Find classes in the given package (or subpackages)
+    return componentProvider.findCandidateComponents(domainValuePackage).stream()
+        .map( bean -> Class.forName(bean.getBeanClassName()))
+        .forEach( domainValueType -> new DomainValueUserType(configuration.getTypeResolver(), domainValueType))
+        .collect(toList());
 }
 
 ```
