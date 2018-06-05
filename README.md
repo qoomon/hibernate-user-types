@@ -26,3 +26,35 @@ Hibernate User Types [![Build Status](https://travis-ci.org/qoomon/hibernate-use
   * **InternetAddress** - javax.mail.internet.InternetAddress
     * com.qoomon.hibernate.usertype.javax.mail.InternetAddressUserType
 
+
+**Spring Example**
+```java
+@Bean
+public SessionFactory sessionFactory(){
+    Configuration configuration = new Configuration();
+
+    UserTypeUtil.registerUserTypes(configuration, createDomainValueUserTypes(configuration, "com.qoomon.fancyapp.domainvalues"));
+    UserTypeUtil.registerUserTypes(configuration, new BigMoneyUserType());
+    UserTypeUtil.registerUserTypes(configuration, new MoneyUserType());
+    UserTypeUtil.registerUserTypes(configuration, new InternetAddressUserType());
+
+    StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
+    serviceRegistryBuilder.applySetting(Environment.DATASOURCE, dataSource());
+    ServiceRegistry serviceRegistry = serviceRegistryBuilder.build();
+    SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    return sessionFactory;
+}
+//...
+
+public List<DomainValueUserType> createDomainValueUserTypes(Configuration configuration, String domainValuePackage){
+    ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(false);
+    // Filter to include only classes assignable to DV.class
+    componentProvider.addIncludeFilter(new AssignableTypeFilter(DV.class));
+    // Find classes in the given package (or subpackages)
+    return componentProvider.findCandidateComponents(domainValuePackage).stream()
+        .map( bean -> Class.forName(bean.getBeanClassName()))
+        .forEach( domainValueType -> new DomainValueUserType(configuration.getTypeResolver(), domainValueType))
+        .collect(toList());
+}
+
+```

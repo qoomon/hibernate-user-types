@@ -27,15 +27,6 @@ public class DomainValueUserType<T extends DV<V>, V> extends AbstractUserType<T,
         }
     }
 
-    public static <T extends DV<V>, V> List<UserType> generate(TypeResolver typeResolver, final Collection<Class<T>> domainValueTypes) {
-        final List<UserType> result = new LinkedList<>();
-
-        for (final Class<T> domainValueClass : domainValueTypes) {
-            final UserType userType = new DomainValueUserType<>( typeResolver, domainValueClass);
-            result.add(userType);
-        }
-        return result;
-    }
 
     @Override
     public SingleColumnType<V> getHibernateType() {
