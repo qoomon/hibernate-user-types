@@ -1,5 +1,6 @@
 Hibernate User Types
-[![Build Status](https://travis-ci.com/qoomon/hibernate-user-type.svg?branch=master)](https://travis-ci.com/qoomon/hibernate-user-type)
+
+[![Build Status](https://travis-ci.com/qoomon/hibernate-user-types.svg?branch=master)](https://travis-ci.com/qoomon/hibernate-user-types)
 ===================
 **Maven Dependency**
 ```xml
